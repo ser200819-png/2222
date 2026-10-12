@@ -15,7 +15,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldInfo;
+import net.minecraft.world.storage.WorldInfo;
 
 /** Маска Междумирца: шлем с Огнеустойчивостью; Shift+ПКМ - "Отправление" к спавну. */
 public class InterworldMaskItem extends ArmorItem {
