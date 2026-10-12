@@ -34,7 +34,7 @@
   "item.thirteenflames.john_glasses.tooltip": "Даёт Ночное зрение, пока надеты",
   "item.thirteenflames.john_badge": "Значок Джона",
   "item.thirteenflames.john_badge.tooltip": "Даёт Удачу, пока в инвентаре"
-    "tooltip.thirteenflames.bow_of_knefmtiti": "Стреляет без стрел раз в 3 секунды. Стрелы бьют молнией при любом попадании.",
+  "tooltip.thirteenflames.bow_of_knefmtiti": "Стреляет без стрел раз в 3 секунды. Стрелы бьют молнией при любом попадании.",
   "tooltip.thirteenflames.bow_of_knefmtiti.ability": "Shift+ПКМ: Град молний — заряд 3 сек., откат 120 сек.",
   "message.thirteenflames.bow_channel": "Зарядка Града молний...",
   "message.thirteenflames.bow_ready": "Град молний обрушился!"
