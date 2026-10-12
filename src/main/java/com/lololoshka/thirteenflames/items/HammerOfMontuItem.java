@@ -9,7 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.Rarity;
-import net.minecraft.tags.Tags;
+import net.minecraftforge.common.Tags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
