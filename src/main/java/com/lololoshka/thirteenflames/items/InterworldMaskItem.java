@@ -21,8 +21,7 @@ public class InterworldMaskItem extends Item {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
         if (!worldIn.isRemote && playerIn.isSneaking() && worldIn instanceof ServerWorld) {
-            BlockPos spawn = serverWorld.getSpawnPoint();
-            BlockPos spawn = serverWorld.getSharedSpawnPos();
+            BlockPos spawn = ((ServerWorld) worldIn).getSpawnPoint();
             playerIn.setPositionAndUpdate(spawn.getX() + 0.5D, spawn.getY(), spawn.getZ() + 0.5D);
             return ActionResult.resultSuccess(stack);
         }
