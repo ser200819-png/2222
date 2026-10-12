@@ -1,0 +1,23 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+license="All rights reserved"
+
+[[mods]]
+modId="thirteenflames"
+version="1.0.0"
+displayName="Thirteen Flames"
+description='''Мод по мотивам вселенной Лололошки: 13 Огней из Мисра и атрибутика'''
+
+[[dependencies.thirteenflames]]
+    modId="forge"
+    mandatory=true
+    versionRange="[36,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.thirteenflames]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.5,1.17)"
+    ordering="NONE"
+    side="BOTH"

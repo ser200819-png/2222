@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RGR",
+    "R R",
+    "   "
+  ],
+  "key": {
+    "R": {
+      "item": "minecraft:red_wool"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "result": {
+    "item": "thirteenflames:lololoshka_mask",
+    "count": 1
+  }
+}

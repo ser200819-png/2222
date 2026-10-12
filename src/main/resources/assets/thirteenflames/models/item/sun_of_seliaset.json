@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "thirteenflames:item/sun_of_seliaset"
+  }
+}

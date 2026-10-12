@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "thirteenflames:item/fang_of_ronas"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "NGN",
+    "   ",
+    "   "
+  ],
+  "key": {
+    "N": {
+      "item": "minecraft:gold_nugget"
+    },
+    "G": {
+      "item": "minecraft:red_wool"
+    }
+  },
+  "result": {
+    "item": "thirteenflames:john_badge",
+    "count": 1
+  }
+}
