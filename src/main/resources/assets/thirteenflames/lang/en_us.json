@@ -34,4 +34,9 @@
   "item.thirteenflames.john_glasses.tooltip": "Grants Night Vision while worn",
   "item.thirteenflames.john_badge": "John's Badge",
   "item.thirteenflames.john_badge.tooltip": "Grants Luck while carried"
+  "tooltip.thirteenflames.bow_of_knefmtiti": "Shoots without arrows once every 3s. Arrows strike lightning on any impact.",
+  "tooltip.thirteenflames.bow_of_knefmtiti.ability": "Shift+Right Click: Thunder Hail - 3s charge, 120s cooldown.",
+  "message.thirteenflames.bow_channel": "Charging Thunder Hail...",
+  "message.thirteenflames.bow_ready": "Thunder Hail has struck!"
+
 }
