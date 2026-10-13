@@ -1,5 +1,6 @@
 package com.lololoshka.thirteenflames.items;
 
+import com.lololoshka.thirteenflames.ModItems;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,7 +12,6 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.item.UseAction;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ActionResult;
@@ -33,20 +33,25 @@ import java.util.Locale;
 
 public class TravelerSwordItem extends SwordItem {
 
-    public static final int MAX_CHARGE_TICKS = 72000; // 60 минут удержания максимум
+    // Заряд ускорен в 3 раза: макс. удержание 24000 тиков = 20 минут
+    public static final int MAX_CHARGE_TICKS = 24000;
     private static final int TELEPORT_COOLDOWN = 9 * 20;
     private static final int TELEPORT_RANGE = 16;
+
+    // Пороги уровней заряда (в тиках), тоже втрое быстрее старых
+    private static final int LEVEL1_TICKS = 200;   // ~3.3 c  (было 10 c)
+    private static final int LEVEL2_TICKS = 400;   // ~6.7 c  (было 20 c)
+    private static final int LEVEL3_TICKS = 2000;  // ~33.3 c (было 100 c)
 
     public TravelerSwordItem() {
         super(new IItemTier() {
             @Override public int getMaxUses()        { return 2031; }
             @Override public float getEfficiency()   { return 9.0F; }
-            @Override public float getAttackDamage() { return 5.0F; } // +3 базовых меча = 9 урона
+            @Override public float getAttackDamage() { return 5.0F; }
             @Override public int getHarvestLevel()   { return 3; }
             @Override public int getEnchantability() { return 15; }
             @Override public Ingredient getRepairMaterial() { return Ingredient.fromItems(Items.DIAMOND); }
-        }, 3, -2.4F, new Item.Properties().maxStackSize(1).rarity(Rarity.EPIC));
-        // Если в старом конструкторе был .group(...) — перенеси его в Properties выше
+        }, 3, -2.4F, new Item.Properties().maxStackSize(1).rarity(Rarity.EPIC).group(ModItems.GROUP));
     }
 
     // ---------- ПКМ: телепорт. Shift+ПКМ: зарядка ----------
@@ -79,7 +84,7 @@ public class TravelerSwordItem extends SwordItem {
                 RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, player));
 
         Vector3d target = (hit != null && hit.getType() == RayTraceResult.Type.BLOCK)
-                ? hit.getHitVec().subtract(look.scale(0.5)) // чуть перед блоком
+                ? hit.getHitVec().subtract(look.scale(0.5))
                 : end;
 
         double x = target.x;
@@ -103,7 +108,7 @@ public class TravelerSwordItem extends SwordItem {
         return UseAction.NONE;
     }
 
-    // ---------- Зарядка: частицы и таймер с цветами ----------
+    // ---------- Зарядка: частицы и таймер ----------
 
     @Override
     public void onUsingTick(ItemStack stack, LivingEntity entity, int count) {
@@ -112,17 +117,15 @@ public class TravelerSwordItem extends SwordItem {
         World world = player.world;
         if (world.isRemote) return;
 
-        long elapsed = MAX_CHARGE_TICKS - count;
-        double seconds = elapsed / 20.0;
-
+        int elapsed = MAX_CHARGE_TICKS - count;
         ServerWorld sw = (ServerWorld) world;
         Vector3d pos = player.getPositionVec().add(0, 1.0, 0);
 
-        if (seconds <= 10) {
+        if (elapsed <= LEVEL1_TICKS) {
             if (elapsed % 10 == 0) {
                 sw.spawnParticle(ParticleTypes.HAPPY_VILLAGER, pos.x, pos.y, pos.z, 4, 0.4, 0.6, 0.4, 0.0);
             }
-        } else if (seconds <= 20) {
+        } else if (elapsed <= LEVEL2_TICKS) {
             if (elapsed % 5 == 0) {
                 sw.spawnParticle(ParticleTypes.FLAME, pos.x, pos.y, pos.z, 6, 0.5, 0.8, 0.5, 0.01);
             }
@@ -133,14 +136,15 @@ public class TravelerSwordItem extends SwordItem {
             }
         }
 
-        boolean pulse = seconds > 100;
+        boolean pulse = elapsed > LEVEL3_TICKS + 2000;
         if (elapsed % 10 == 0 || (pulse && elapsed % 4 == 0)) {
             TextFormatting color;
-            if (seconds <= 10)       color = TextFormatting.GREEN;
-            else if (seconds <= 20)  color = TextFormatting.RED;
-            else if (seconds <= 100) color = TextFormatting.DARK_PURPLE;
+            if (elapsed <= LEVEL1_TICKS)      color = TextFormatting.GREEN;
+            else if (elapsed <= LEVEL2_TICKS) color = TextFormatting.RED;
+            else if (elapsed <= LEVEL3_TICKS) color = TextFormatting.DARK_PURPLE;
             else color = (world.getGameTime() % 8 < 4) ? TextFormatting.LIGHT_PURPLE : TextFormatting.DARK_PURPLE;
 
+            double seconds = elapsed / 20.0;
             player.sendStatusMessage(new StringTextComponent("Заряд: "
                     + String.format(Locale.US, "%.1f", seconds) + " с").mergeStyle(color), true);
         }
@@ -155,16 +159,15 @@ public class TravelerSwordItem extends SwordItem {
         PlayerEntity player = (PlayerEntity) entity;
         ServerWorld sw = (ServerWorld) world;
 
-        long elapsedTicks = MAX_CHARGE_TICKS - timeLeft;
-        double seconds = elapsedTicks / 20.0;
+        int elapsedTicks = MAX_CHARGE_TICKS - timeLeft;
 
-        if (seconds >= 2 && seconds <= 10) {
+        if (elapsedTicks >= 40 && elapsedTicks <= LEVEL1_TICKS) {
             slashLine(sw, player, 2, 17.0F, SlashKind.EMERALD);
             player.getCooldownTracker().setCooldown(this, 2 * 20);
-        } else if (seconds <= 20) {
+        } else if (elapsedTicks <= LEVEL2_TICKS) {
             slashLine(sw, player, 5, 25.0F, SlashKind.FIRE);
             player.getCooldownTracker().setCooldown(this, 6 * 20);
-        } else if (seconds <= 100) {
+        } else if (elapsedTicks <= LEVEL3_TICKS) {
             slashLine(sw, player, 8, 45.0F, SlashKind.PURPLE);
             breakVerticalSemicircle(sw, player, 15);
             player.getCooldownTracker().setCooldown(this, 30 * 20);
@@ -191,16 +194,16 @@ public class TravelerSwordItem extends SwordItem {
             case EMERALD:
             default:
                 particle = ParticleTypes.HAPPY_VILLAGER;
-                dir1 = side;                            // горизонтальная линия
+                dir1 = side;
                 break;
             case FIRE:
                 particle = ParticleTypes.FLAME;
-                dir1 = side.add(up).normalize();        // диагональ 1
-                dir2 = side.subtract(up).normalize();   // диагональ 2 (крест)
+                dir1 = side.add(up).normalize();
+                dir2 = side.subtract(up).normalize();
                 break;
             case PURPLE:
                 particle = ParticleTypes.SOUL_FIRE_FLAME;
-                dir1 = up;                              // вертикальная линия
+                dir1 = up;
                 break;
         }
 
@@ -217,7 +220,7 @@ public class TravelerSwordItem extends SwordItem {
                 player.getBoundingBox().grow(radius + 1.0), e -> e != player && e.isAlive());
         for (LivingEntity target : targets) {
             Vector3d toTarget = target.getPositionVec().add(0, target.getHeight() / 2.0, 0).subtract(eye);
-            if (toTarget.dotProduct(look) <= 0) continue;   // только перед игроком
+            if (toTarget.dotProduct(look) <= 0) continue;
             if (toTarget.length() > radius + 1.0) continue;
             target.attackEntityFrom(DamageSource.causePlayerDamage(player), damage);
         }
@@ -226,7 +229,7 @@ public class TravelerSwordItem extends SwordItem {
                 SoundCategory.PLAYERS, 1.2F, kind == SlashKind.EMERALD ? 1.2F : 0.7F);
     }
 
-    // ---------- Вертикальный полукруг блоков (уровень 3) ----------
+    // ---------- Вертикальный полукруг блоков ----------
 
     private void breakVerticalSemicircle(ServerWorld world, PlayerEntity player, int radius) {
         BlockPos center = player.getPosition();
@@ -249,7 +252,7 @@ public class TravelerSwordItem extends SwordItem {
                 SoundCategory.PLAYERS, 0.8F, 0.6F);
     }
 
-    // ---------- Ульта: сфера 45 (уровень 4) ----------
+    // ---------- Ульта: сфера 45 ----------
 
     private void ultimateSphere(ServerWorld world, PlayerEntity player, int radius) {
         BlockPos feet = player.getPosition();
@@ -271,7 +274,6 @@ public class TravelerSwordItem extends SwordItem {
                     1, 0.1, 0.1, 0.1, 0.0);
         }
 
-        // Ломаем сферу без дропа, кроме платформы 3x3 (слой ног и слой под ногами)
         for (BlockPos p : BlockPos.getAllInBoxMutable(
                 feet.add(-radius, -radius, -radius), feet.add(radius, radius, radius))) {
             if (p.distanceSq(feet.getX() + 0.5, feet.getY(), feet.getZ() + 0.5, true)
@@ -290,12 +292,11 @@ public class TravelerSwordItem extends SwordItem {
     private void destroyBlockNoDrop(ServerWorld world, BlockPos pos) {
         BlockState state = world.getBlockState(pos);
         if (state.isAir()) return;
-        if (state.getBlockHardness(world, pos) < 0) return; // бедрок не трогаем
-        if (world.getTileEntity(pos) != null) return;       // сундуки и прочие не трогаем
+        if (state.getBlockHardness(world, pos) < 0) return;
+        if (world.getTileEntity(pos) != null) return;
         world.destroyBlock(pos, false);
     }
 
-    // Разрезы не тратят прочность меча
     @Override
     public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         return false;
