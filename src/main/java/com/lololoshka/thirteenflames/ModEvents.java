@@ -1,22 +1,33 @@
 package com.lololoshka.thirteenflames;
 
 import com.lololoshka.thirteenflames.items.BowOfKnefmtitiItem;
+import com.lololoshka.thirteenflames.items.HornOfSeliasetItem;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.particles.RedstoneParticleData;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -107,5 +118,113 @@ public class ModEvents {
             }
             player.sendStatusMessage(new StringTextComponent("§9Град молний обрушился!"), true);
         }
+    }
+
+    // ---------- «Торнадо» по слову в чате ----------
+
+    @SubscribeEvent
+    public static void onChat(ServerChatEvent event) {
+        String message = event.getMessage().trim();
+        if (!message.equalsIgnoreCase("Торнадо")) return;
+
+        ServerPlayerEntity player = event.getPlayer();
+        ItemStack held = player.getHeldItemMainhand();
+        if (!(held.getItem() instanceof HornOfSeliasetItem)) {
+            held = player.getHeldItemOffhand();
+            if (!(held.getItem() instanceof HornOfSeliasetItem)) return;
+        }
+        HornOfSeliasetItem.startTornado(player);
+        event.setCanceled(true); // слово не улетает в общий чат
+    }
+
+    // ---------- Тик торнадо (серверный тик) ----------
+
+    @SubscribeEvent
+    public static void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        if (server == null) return;
+
+        for (ServerWorld world : server.getWorlds()) {
+            for (ServerPlayerEntity player : world.getPlayers()) {
+                CompoundNBT data = player.getPersistentData();
+                if (!data.contains("tf_tornado_end")) continue;
+                if (data.getLong("tf_tornado_end") > world.getGameTime()) {
+                    tickTornado(world, player, data);
+                } else {
+                    endTornado(world, player, data);
+                }
+            }
+        }
+    }
+
+    private static void tickTornado(ServerWorld world, ServerPlayerEntity player, CompoundNBT data) {
+        // Игрок завис на 4 блока выше точки старта и не двигается
+        double x = data.getDouble("tf_tornado_x");
+        double y = data.getDouble("tf_tornado_y");
+        double z = data.getDouble("tf_tornado_z");
+        player.setPositionAndUpdate(x, y, z);
+        player.setMotion(Vector3d.ZERO);
+        player.fallDistance = 0.0F;
+
+        long gameTime = world.getGameTime();
+
+        // Кольцо вихря радиусом 6 под игроком
+        if (gameTime % 2 == 0) {
+            double spin = (gameTime % 40) * Math.PI / 20.0;
+            for (int i = 0; i < 8; i++) {
+                double angle = spin + i * Math.PI / 4.0;
+                world.spawnParticle(ParticleTypes.CLOUD,
+                        x + Math.cos(angle) * 6.0, y - 2.0, z + Math.sin(angle) * 6.0,
+                        2, 0.3, 1.5, 0.3, 0.02);
+            }
+        }
+
+        // Притягиваем мобов в радиусе 100 в кольцо радиусом 6 и крутим
+        double radiusSq = 100.0 * 100.0;
+        for (LivingEntity target : world.getEntitiesWithinAABB(LivingEntity.class,
+                player.getBoundingBox().grow(100), e -> e != player && e.isAlive())) {
+            double dx = target.getPosX() - x;
+            double dz = target.getPosZ() - z;
+            double dist = Math.sqrt(dx * dx + dz * dz);
+            if (dist * dist > radiusSq || dist < 0.001) continue;
+
+            double nx = dx / dist;
+            double nz = dz / dist;
+            double corr = (dist - 6.0) * 0.05;   // доводим до кольца радиусом 6
+            double orbit = 0.35;                  // скорость полёта по кругу
+            target.setMotion(-nz * orbit - nx * corr, 0.05, nx * orbit - nz * corr);
+
+            if (gameTime % 20 == 0) {
+                target.attackEntityFrom(DamageSource.causePlayerDamage(player), 4.0F);
+            }
+        }
+    }
+
+    private static void endTornado(ServerWorld world, ServerPlayerEntity player, CompoundNBT data) {
+        // Рог ломается
+        ItemStack main = player.getHeldItemMainhand();
+        ItemStack off = player.getHeldItemOffhand();
+        if (main.getItem() instanceof HornOfSeliasetItem) main.shrink(1);
+        else if (off.getItem() instanceof HornOfSeliasetItem) off.shrink(1);
+        world.playSound(null, player.getPosition(), SoundEvents.ENTITY_ITEM_BREAK,
+                SoundCategory.PLAYERS, 1.0F, 0.8F);
+
+        // Слабость и тошнота на 20 минут
+        player.addPotionEffect(new EffectInstance(Effects.WEAKNESS, 20 * 60 * 20));
+        player.addPotionEffect(new EffectInstance(Effects.NAUSEA, 20 * 60 * 20));
+        player.sendStatusMessage(new TranslationTextComponent(
+                "message.thirteenflames.horn_tornado_end"), true);
+
+        // Погода возвращается, какой была
+        world.setRaining(data.getBoolean("tf_weather_rain"));
+        world.setThundering(data.getBoolean("tf_weather_thunder"));
+
+        data.remove("tf_tornado_end");
+        data.remove("tf_tornado_x");
+        data.remove("tf_tornado_y");
+        data.remove("tf_tornado_z");
+        data.remove("tf_weather_rain");
+        data.remove("tf_weather_thunder");
     }
 }
