@@ -217,8 +217,9 @@ public class ModEvents {
                 "message.thirteenflames.horn_tornado_end"), true);
 
         // Погода возвращается, какой была
-        world.setRaining(data.getBoolean("tf_weather_rain"));
-        world.setThundering(data.getBoolean("tf_weather_thunder"));
+        world.getWorldInfo().setRaining(data.getBoolean("tf_weather_rain"));
+        world.getWorldInfo().setThundering(data.getBoolean("tf_weather_thunder"));
+
 
         data.remove("tf_tornado_end");
         data.remove("tf_tornado_x");
