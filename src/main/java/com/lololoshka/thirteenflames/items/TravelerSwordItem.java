@@ -16,7 +16,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.UseAction;
+import net.minecraft.item.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
@@ -187,7 +187,7 @@ public class TravelerSwordItem extends SwordItem {
         Vector3d up = new Vector3d(0, 1, 0);
         Vector3d side = look.crossProduct(up).normalize(); // перпендикуляр к взгляду
 
-        ParticleTypes pt;
+        net.minecraft.particles.IParticleData pt;
         Vector3d dir1, dir2;
         if (kind.equals("emerald")) {
             pt = ParticleTypes.HAPPY_VILLAGER;
