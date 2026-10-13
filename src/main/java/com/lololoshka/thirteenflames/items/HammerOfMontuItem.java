@@ -2,14 +2,15 @@ package com.lololoshka.thirteenflames.items;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import net.minecraft.attribute.Attribute;
-import net.minecraft.attribute.AttributeModifier;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -45,7 +46,7 @@ public class HammerOfMontuItem extends Item {
 
     public HammerOfMontuItem() {
         super(new Item.Properties().maxDamage(MAX_DURABILITY));
-        // Если в старом конструкторе был .group(...) или тир — перенеси ту строку сюда
+        // Если в старом конструкторе был .group(...) или тир — перенеси эту строку сюда
     }
 
     // ---------- Состояние «Истощённая» ----------
@@ -91,11 +92,29 @@ public class HammerOfMontuItem extends Item {
 
     @Override
     public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, PlayerEntity player) {
-        return isExhausted(stack); // true — ломание отменяется
+        if (isExhausted(stack)) return true; // ломание отменяется
+        if (player.world.isRemote) return false;
+
+        ServerWorld world = (ServerWorld) player.world;
+        BlockState center = world.getBlockState(pos);
+        boolean centerIsOre = Tags.Blocks.ORES.contains(center.getBlock());
+
+        for (BlockPos p : area3x3(pos, player.getHorizontalFacing())) {
+            breakBlockWithDrops(world, player, p);
+        }
+        if (centerIsOre) {
+            BlockPos min = pos.add(-1, -1, -1);
+            BlockPos max = pos.add(1, 1, 1);
+            BlockPos.getAllInBox(min, max).forEach(p -> {
+                BlockState s = world.getBlockState(p);
+                if (Tags.Blocks.ORES.contains(s.getBlock())) breakBlockWithDrops(world, player, p);
+            });
+        }
+        return false; // центральный блок доломает ванильный код
     }
 
     @Override
-    public boolean canHarvestBlock(ItemStack stack, net.minecraft.block.BlockState state) {
+    public boolean canHarvestBlock(ItemStack stack, BlockState state) {
         return !isExhausted(stack);
     }
 
@@ -110,29 +129,6 @@ public class HammerOfMontuItem extends Item {
             return HashMultimap.create(); // без урона и характеристик
         }
         return super.getAttributeModifiers(slot, stack);
-    }
-
-    // ---------- Копание 3x3 и руды 3x3x3 ----------
-
-    @Override
-    public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, PlayerEntity player) {
-        if (isExhausted(stack)) return true;
-        if (player.world.isRemote) return false;
-
-        ServerWorld world = (ServerWorld) player.world;
-        BlockState center = world.getBlockState(pos);
-        boolean centerIsOre = Tags.Blocks.ORES.contains(center.getBlock());
-
-        for (BlockPos p : area3x3(pos, player.getHorizontalFacing())) {
-            breakBlockWithDrops(world, player, p);
-        }
-        if (centerIsOre) {
-            for (BlockPos p : BlockPos.getAllInBox(pos.add(-1, -1, -1), pos.add(1, 1, 1))) {
-                BlockState s = world.getBlockState(p);
-                if (Tags.Blocks.ORES.contains(s.getBlock())) breakBlockWithDrops(world, player, p);
-            }
-        }
-        return false; // центральный блок доломает ванильный код
     }
 
     private static List<BlockPos> area3x3(BlockPos center, Direction facing) {
@@ -217,7 +213,9 @@ public class HammerOfMontuItem extends Item {
     private void launchOres(ServerWorld world, PlayerEntity player) {
         BlockPos center = player.getPosition();
         int radius = 50;
-        for (BlockPos p : BlockPos.getAllInBox(center.add(-radius, -radius, -radius), center.add(radius, radius, radius))) {
+        BlockPos min = center.add(-radius, -radius, -radius);
+        BlockPos max = center.add(radius, radius, radius);
+        BlockPos.getAllInBox(min, max).forEach(p -> {
             BlockState state = world.getBlockState(p);
             if (Tags.Blocks.ORES.contains(state.getBlock())) {
                 List<ItemStack> drops = Block.getDrops(state, world, p.toImmutable(), null);
@@ -227,11 +225,11 @@ public class HammerOfMontuItem extends Item {
                             p.getX() + 0.5, p.getY() + 0.5, p.getZ() + 0.5, drop);
                     double dx = (world.rand.nextDouble() - 0.5) * 0.4;
                     double dz = (world.rand.nextDouble() - 0.5) * 0.4;
-                    entity.setMotion(dx, 0.9, dz); // руды вылетают вверх
+                    entity.setMotion(dx, 0.9, dz); // руда вылетает вверх
                     world.addEntity(entity);
                 }
             }
-        }
+        });
         world.playSound(null, center, SoundType.NETHERRACK.getBreakSound(),
                 SoundCategory.BLOCKS, 1.5F, 0.6F);
     }
@@ -258,10 +256,9 @@ public class HammerOfMontuItem extends Item {
 
         if (isExhausted(stack)) {
             int rate;
-            if (isSelected && player.getHeldItemMainhand() == stack)      rate = 20; // основная рука
-            else if (isSelected && player.getHeldItemOffhand() == stack)  rate = 10; // вспомогательная
-            else if (isSelected)                                          rate = 10;
-            else                                                          rate = 5;  // в инвентаре
+            if (player.getHeldItemMainhand() == stack)      rate = 20; // основная рука
+            else if (player.getHeldItemOffhand() == stack)  rate = 10; // вспомогательная
+            else                                            rate = 5;  // в инвентаре
             stack.setDamage(Math.max(0, stack.getDamage() - rate));
             if (stack.getDamage() == 0) {
                 setExhausted(stack, false);
