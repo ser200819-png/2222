@@ -1,9 +1,9 @@
 package com.lololoshka.thirteenflames.items;
 
 import com.lololoshka.thirteenflames.ModItems;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ITooltipFlag;
 import net.minecraft.item.Rarity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
