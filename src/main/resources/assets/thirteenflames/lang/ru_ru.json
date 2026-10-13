@@ -26,5 +26,7 @@
   "message.thirteenflames.hammer_wall_low": "Недостаточно прочности для «Стены земли» (нужно 330)."
   "message.thirteenflames.hammer_ore_start": "Дрожь земли пробуждает руду...",
   "message.thirteenflames.hammer_ore_done": "Охотник на руды завершил поиск."
+  "message.thirteenflames.horn_tornado_start": "Гроза собирается... Рог ветра зовёт торнадо!",
+  "message.thirteenflames.horn_tornado_end": "Рог ветра рассыпался в прах..."
 
 }
