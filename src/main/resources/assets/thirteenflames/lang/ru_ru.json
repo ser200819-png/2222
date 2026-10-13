@@ -24,5 +24,7 @@
   "message.thirteenflames.hammer_awake": "Дрожь земли пробудилась!",
   "message.thirteenflames.hammer_ore_low": "Недостаточно прочности для «Охотника на руды» (нужно 540).",
   "message.thirteenflames.hammer_wall_low": "Недостаточно прочности для «Стены земли» (нужно 330)."
+  "message.thirteenflames.hammer_ore_start": "Дрожь земли пробуждает руду...",
+  "message.thirteenflames.hammer_ore_done": "Охотник на руды завершил поиск."
 
 }
