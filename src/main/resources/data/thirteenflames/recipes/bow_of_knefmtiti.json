@@ -1,18 +1,17 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "item": "minecraft:bow"
-    },
-    {
-      "item": "minecraft:string"
-    },
-    {
-      "item": "minecraft:glowstone_dust"
-    }
-  ],
+  "type": "minecraft:crafting_shaped",
+  "group": "thirteenflames",
+  "pattern": [
+    " S ",
+    "SBS",
+    " S "
+  ]
+  ,
+  "key": {
+    "S": { "item": "minecraft:nether_star" },
+    "B": { "item": "minecraft:bow" }
+  },
   "result": {
-    "item": "thirteenflames:bow_of_knefmtiti",
-    "count": 1
+    "item": "thirteenflames:bow_of_knefmtiti"
   }
 }
