@@ -1,20 +1,28 @@
 {
-  "itemGroup.thirteenflames": "Multivers",
+  "itemGroup.thirteenflames": "Thirteen Flames",
 
-  "item.thirteenflames.hammer_of_montu": "Quake of the Ground",
-  "item.thirteenflames.fang_of_ronas": "Fang of Ronas",
-  "item.thirteenflames.bow_of_knefmtiti": "Moon Bow",
-  "item.thirteenflames.horn_of_seliaset": "Horn of Wind",
+  "item.thirteenflames.bow_of_knefmtiti": "Bow of Knefmtiti",
+  "item.thirteenflames.hammer_of_montu": "Hammer of Montu",
+  "item.thirteenflames.hammer_of_montu_exhausted": "Hammer of Montu (Exhausted)",
+  "item.thirteenflames.horn_of_seliasset": "Horn of Seliaset",
   "item.thirteenflames.traveler_sword": "Traveler's Sword",
-  "item.thirteenflames.interworld_mask": "Interworld Mask",
-  "item.thirteenflames.lololoshka_mask": "Lololoshka's Mask",
-  "item.thirteenflames.john_scarf": "John's Scarf",
-  "item.thirteenflames.john_glasses": "John's Glasses",
-  "item.thirteenflames.john_badge": "John's Badge",
+  "item.thirteenflames.fang_of_rhonos": "Fang of Rhonos",
+  "item.thirteenflames.mask_of_interworlder": "Mask of the Interworlder",
 
-  "tooltip.thirteenflames.hammer_of_montu": "Smashes the ground, smelting nearby ores.",
-  "tooltip.thirteenflames.fang_of_ronas": "An ancient fang that drinks its foes' strength.",
-  "tooltip.thirteenflames.horn_of_seliaset": "Blow it, and the elements answer.",
-  "tooltip.thirteenflames.traveler_sword": "The trusted blade of one who walks between worlds.",
-  "tooltip.thirteenflames.interworld_mask": "Shift+Right Click: teleports to world spawn."
+  "tooltip.thirteenflames.hammer_of_montu": "RMB: Ore Hunter. Shift+RMB: Earthen Wall. Repairs itself while held.",
+  "tooltip.thirteenflames.hammer_exhausted": "The hammer sleeps... Hold it to awaken it.",
+  "tooltip.thirteenflames.hammer_durability": "Durability: %s / %s",
+  "tooltip.thirteenflames.horn_of_seliasset": "RMB: Tornado. The Horn of Wind tears everything apart.",
+  "tooltip.thirteenflames.traveler_sword": "Hold RMB to charge the blade. Release to unleash the strike.",
+  "tooltip.thirteenflames.fang_of_rhonos": "A trophy of Rhonos. Its power is yet dormant...",
+  "tooltip.thirteenflames.mask_of_interworlder": "A mask of the wanderer between worlds. It is silent for now.",
+
+  "message.thirteenflames.hammer_wall_low": "Not enough durability for the Earthen Wall (330 required).",
+  "message.thirteenflames.hammer_ore_low": "Not enough durability for the Ore Hunter (540 required).",
+  "message.thirteenflames.hammer_ore_start": "The trembling earth awakens the ore...",
+  "message.thirteenflames.hammer_ore_done": "The Ore Hunter has finished its search.",
+  "message.thirteenflames.hammer_sleeping": "The hammer is exhausted and falls asleep...",
+  "message.thirteenflames.hammer_awake": "The Hammer of Montu has awakened!",
+  "message.thirteenflames.horn_tornado_start": "The storm is gathering... The Horn of Wind calls the tornado!",
+  "message.thirteenflames.horn_tornado_end": "The Horn of Wind crumbled to dust..."
 }
