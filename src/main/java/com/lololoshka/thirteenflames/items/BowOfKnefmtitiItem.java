@@ -36,6 +36,7 @@ public class BowOfKnefmtitiItem extends Item {
     public static final int CHANNEL_TICKS = 60;            // заряд способности: 3 секунды
     public static final int MIN_DRAW_TICKS = 10;           // минимальная натяжка для выстрела
     public static final int FULL_DRAW_TICKS = 30;          // полная натяжка (макс. урон)
+    public static final double ARROW_DAMAGE_MAX = 10.0D;   // урон стрел Града молний (5 сердец)
 
     public BowOfKnefmtitiItem() {
         super(new Item.Properties().group(ModItemGroup.THIRTEEN_FLAMES).maxStackSize(1).rarity(Rarity.EPIC));
