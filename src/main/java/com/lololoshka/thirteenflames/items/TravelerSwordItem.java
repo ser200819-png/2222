@@ -44,7 +44,7 @@ public class TravelerSwordItem extends SwordItem {
     private static final int LEVEL3_TICKS = 2000;  // ~33.3 c (было 100 c)
 
     public TravelerSwordItem() {
-        super(new IItemTier() {
+        super(new IItemTier().group(ModItems.GROUP) {
             @Override public int getMaxUses()        { return 2031; }
             @Override public float getEfficiency()   { return 9.0F; }
             @Override public float getAttackDamage() { return 5.0F; }
