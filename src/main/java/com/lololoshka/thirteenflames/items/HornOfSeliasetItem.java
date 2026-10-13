@@ -179,8 +179,9 @@ public class HornOfSeliasetItem extends Item {
         player.getPersistentData().putBoolean("tf_weather_rain", world.isRaining());
         player.getPersistentData().putBoolean("tf_weather_thunder", world.isThundering());
 
-        ((net.minecraft.world.storage.WorldInfo) world.getWorldInfo()).setRaining(true);
-        ((net.minecraft.world.storage.WorldInfo) world.getWorldInfo()).setThundering(true);
+        ((net.minecraft.world.storage.IServerWorldInfo) world.getWorldInfo()).setRaining(true);
+        ((net.minecraft.world.storage.IServerWorldInfo) world.getWorldInfo()).setThundering(true);
+
 
 
         world.playSound(null, player.getPosition(), SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER,
