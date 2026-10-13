@@ -217,7 +217,7 @@ public class ModEvents {
                 "message.thirteenflames.horn_tornado_end"), true);
 
         // Погода возвращается, какой была
-         net.minecraft.world.storage.WorldInfo info = (net.minecraft.world.storage.WorldInfo) world.getWorldInfo();
+        net.minecraft.world.storage.IServerWorldInfo info = (net.minecraft.world.storage.IServerWorldInfo) world.getWorldInfo();
         info.setRaining(data.getBoolean("tf_weather_rain"));
         info.setThundering(data.getBoolean("tf_weather_thunder"));
 
