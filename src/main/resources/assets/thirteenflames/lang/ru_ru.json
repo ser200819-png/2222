@@ -1,24 +1,18 @@
-{
-  "itemGroup.thirteenflames": "Multivers",
+  "itemGroup.thirteenflames": "Тринадцать огней",
 
-  "item.thirteenflames.hammer_of_montu": "Дрожь земли",
-  "item.thirteenflames.fang_of_ronas": "Клык Ронаса",
-  "item.thirteenflames.bow_of_knefmtiti": "Лунный Лук",
-  "item.thirteenflames.horn_of_seliaset": "Рог ветра",
+  "item.thirteenflames.bow_of_knefmtiti": "Лук ветра",
+  "item.thirteenflames.hammer_of_montu": "Дрож земли",
+  "item.thirteenflames.hammer_of_montu_exhausted": "Дрож земли (Истощённый)",
+  "item.thirteenflames.horn_of_seliasset": "Рог ветра",
   "item.thirteenflames.traveler_sword": "Меч Путешественника",
-  "item.thirteenflames.interworld_mask": "Маска междумирца",
-  "item.thirteenflames.lololoshka_mask": "Маска Лололошки",
-  "item.thirteenflames.john_scarf": "Шарф Джона",
-  "item.thirteenflames.john_glasses": "Очки Джона",
-  "item.thirteenflames.john_badge": "Значок Джона",
-  "item.thirteenflames.hammer_of_montu": "Молот Монту",
-  "item.thirteenflames.hammer_of_montu_exhausted": "Молот Монту (Истощённый)",
-  "item.thirteenflames.horn_of_seliasset": "Рог Селиасет",
-  "item.thirteenflames.traveler_sword": "Меч Путешественника",
+  "item.thirteenflames.fang_of_rhonos": "Клык Роноса",
+  "item.thirteenflames.mask_of_interworlder": "Маска Междумирца",
 
   "tooltip.thirteenflames.hammer_of_montu": "ПКМ: Охотник на руды. Shift+ПКМ: Стена земли. Восстанавливает прочность в руках.",
   "tooltip.thirteenflames.hammer_exhausted": "Молот спит... Держи его в руке, чтобы он пробудился.",
   "tooltip.thirteenflames.hammer_durability": "Прочность: %s / %s",
+  "tooltip.thirteenflames.fang_of_rhonos": "Добыча Роноса. Его сила ещё не пробуждена...",
+  "tooltip.thirteenflames.mask_of_interworlder": "Маска странника между мирами. Пока молчит.",
 
   "message.thirteenflames.hammer_wall_low": "Недостаточно прочности для Стены земли (нужно 330).",
   "message.thirteenflames.hammer_ore_low": "Недостаточно прочности для Охотника на руды (нужно 540).",
@@ -26,26 +20,5 @@
   "message.thirteenflames.hammer_ore_done": "Охотник на руды завершил поиск.",
   "message.thirteenflames.hammer_sleeping": "Молот истощён и засыпает...",
   "message.thirteenflames.hammer_awake": "Молот Монту пробудился!",
-
   "message.thirteenflames.horn_tornado_start": "Гроза собирается... Рог ветра зовёт торнадо!",
   "message.thirteenflames.horn_tornado_end": "Рог ветра рассыпался в прах..."
-
-
-  "tooltip.thirteenflames.hammer_of_montu": "Бьёт по земле, испепеляя руды вокруг себя.",
-  "tooltip.thirteenflames.fang_of_ronas": "Древний клык, пьющий силу своих врагов.",
-  "tooltip.thirteenflames.horn_of_seliaset": "Дует — и стихии отвечают.",
-  "tooltip.thirteenflames.traveler_sword": "Верный клинок того, кто идёт между мирами.",
-  "tooltip.thirteenflames.interworld_mask": "Shift+ПКМ: переносит в точку спавна мира."
-  "item.thirteenflames.hammer_of_montu_exhausted": "Дрожь земли (Истощённая)",
-  "tooltip.thirteenflames.hammer_exhausted": "Абсолютно бесполезна, но перезаряжается, пока находится в руках.",
-  "tooltip.thirteenflames.hammer_durability": "Прочность: %s из %s",
-  "message.thirteenflames.hammer_sleeping": "Дрожь земли впала в спячку и стала истощённой...",
-  "message.thirteenflames.hammer_awake": "Дрожь земли пробудилась!",
-  "message.thirteenflames.hammer_ore_low": "Недостаточно прочности для «Охотника на руды» (нужно 540).",
-  "message.thirteenflames.hammer_wall_low": "Недостаточно прочности для «Стены земли» (нужно 330)."
-  "message.thirteenflames.hammer_ore_start": "Дрожь земли пробуждает руду...",
-  "message.thirteenflames.hammer_ore_done": "Охотник на руды завершил поиск."
-  "message.thirteenflames.horn_tornado_start": "Гроза собирается... Рог ветра зовёт торнадо!",
-  "message.thirteenflames.horn_tornado_end": "Рог ветра рассыпался в прах..."
-
-}
