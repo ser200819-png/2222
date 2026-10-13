@@ -17,4 +17,12 @@
   "tooltip.thirteenflames.horn_of_seliaset": "Дует — и стихии отвечают.",
   "tooltip.thirteenflames.traveler_sword": "Верный клинок того, кто идёт между мирами.",
   "tooltip.thirteenflames.interworld_mask": "Shift+ПКМ: переносит в точку спавна мира."
+  "item.thirteenflames.hammer_of_montu_exhausted": "Дрожь земли (Истощённая)",
+  "tooltip.thirteenflames.hammer_exhausted": "Абсолютно бесполезна, но перезаряжается, пока находится в руках.",
+  "tooltip.thirteenflames.hammer_durability": "Прочность: %s из %s",
+  "message.thirteenflames.hammer_sleeping": "Дрожь земли впала в спячку и стала истощённой...",
+  "message.thirteenflames.hammer_awake": "Дрожь земли пробудилась!",
+  "message.thirteenflames.hammer_ore_low": "Недостаточно прочности для «Охотника на руды» (нужно 540).",
+  "message.thirteenflames.hammer_wall_low": "Недостаточно прочности для «Стены земли» (нужно 330)."
+
 }
