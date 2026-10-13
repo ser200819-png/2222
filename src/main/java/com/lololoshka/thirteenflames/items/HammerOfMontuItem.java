@@ -49,7 +49,7 @@ public class HammerOfMontuItem extends Item {
     private static final Random RAND = new Random();
 
     public HammerOfMontuItem() {
-        super(new Item.Properties().maxDamage(MAX_DURABILITY));
+        super(new Item.Properties().maxDamage(MAX_DURABILITY).group(ModItems.GROUP));
         // Если в старом конструкторе был .group(...) или тир — перенеси эту строку сюда
     }
 
