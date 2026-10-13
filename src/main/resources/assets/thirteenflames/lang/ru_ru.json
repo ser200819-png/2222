@@ -1,9 +1,10 @@
+{
   "itemGroup.thirteenflames": "Тринадцать огней",
 
-  "item.thirteenflames.bow_of_knefmtiti": "Лук ветра",
-  "item.thirteenflames.hammer_of_montu": "Дрож земли",
-  "item.thirteenflames.hammer_of_montu_exhausted": "Дрож земли (Истощённый)",
-  "item.thirteenflames.horn_of_seliasset": "Рог ветра",
+  "item.thirteenflames.bow_of_knefmtiti": "Лук Кнефтити",
+  "item.thirteenflames.hammer_of_montu": "Молот Монту",
+  "item.thirteenflames.hammer_of_montu_exhausted": "Молот Монту (Истощённый)",
+  "item.thirteenflames.horn_of_seliasset": "Рог Селиасет",
   "item.thirteenflames.traveler_sword": "Меч Путешественника",
   "item.thirteenflames.fang_of_rhonos": "Клык Роноса",
   "item.thirteenflames.mask_of_interworlder": "Маска Междумирца",
@@ -11,6 +12,8 @@
   "tooltip.thirteenflames.hammer_of_montu": "ПКМ: Охотник на руды. Shift+ПКМ: Стена земли. Восстанавливает прочность в руках.",
   "tooltip.thirteenflames.hammer_exhausted": "Молот спит... Держи его в руке, чтобы он пробудился.",
   "tooltip.thirteenflames.hammer_durability": "Прочность: %s / %s",
+  "tooltip.thirteenflames.horn_of_seliasset": "ПКМ: Торнадо. Рог ветра разрушает всё на своём пути.",
+  "tooltip.thirteenflames.traveler_sword": "Удерживай ПКМ, чтобы зарядить клинок. Отпусти — и высвободи удар.",
   "tooltip.thirteenflames.fang_of_rhonos": "Добыча Роноса. Его сила ещё не пробуждена...",
   "tooltip.thirteenflames.mask_of_interworlder": "Маска странника между мирами. Пока молчит.",
 
@@ -22,3 +25,4 @@
   "message.thirteenflames.hammer_awake": "Молот Монту пробудился!",
   "message.thirteenflames.horn_tornado_start": "Гроза собирается... Рог ветра зовёт торнадо!",
   "message.thirteenflames.horn_tornado_end": "Рог ветра рассыпался в прах..."
+}
