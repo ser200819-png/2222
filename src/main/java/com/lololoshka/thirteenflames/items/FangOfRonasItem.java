@@ -1,27 +1,28 @@
 package com.lololoshka.thirteenflames.items;
 
-import com.lololoshka.thirteenflames.ModItemGroup;
 import com.lololoshka.thirteenflames.ModItems;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
-import net.minecraft.item.SwordItem;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
+import net.minecraft.item.TooltipFlag;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 
-/** Клык Ронаса: Яд II цели, владелец получает Слабость ("анемия"). */
-public class FangOfRonasItem extends SwordItem {
+import javax.annotation.Nullable;
+import java.util.List;
 
-    public FangOfRonasItem() {
-        super(ModItems.TF_TIER, 4, -2.0F,
-                new Item.Properties().group(ModItemGroup.THIRTEEN_FLAMES).maxDamage(2200).rarity(Rarity.EPIC));
+public class FangOfRhonosItem extends Item {
+
+    public FangOfRhonosItem() {
+        super(new Item.Properties().maxStackSize(1)
+                .rarity(Rarity.RARE)
+                .group(ModItems.GROUP));
     }
 
     @Override
-    public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        target.addPotionEffect(new EffectInstance(Effects.POISON, 200, 1));
-        attacker.addPotionEffect(new EffectInstance(Effects.WEAKNESS, 200, 0));
-        return true;
+    public void addInformation(ItemStack stack, @Nullable World world,
+                               List<ITextComponent> tooltip, TooltipFlag flag) {
+        tooltip.add(new TranslationTextComponent("tooltip.thirteenflames.fang_of_rhonos"));
     }
 }
