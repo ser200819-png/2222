@@ -31,7 +31,7 @@ public class HornOfSeliasetItem extends Item {
     private static final String USE_TICKS_TAG = "tf_use_ticks";
 
     public HornOfSeliasetItem() {
-        super(new Item.Properties().maxStackSize(1));
+        super(new Item.Properties().maxStackSize(1).group(ModItems.GROUP));
     }
 
     @Override
